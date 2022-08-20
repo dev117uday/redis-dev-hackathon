@@ -15,7 +15,6 @@
 	<modules>
 		<module>urlink</module>
 		<module>aggregator</module>
-		<module>shared</module>
 	</modules>
 
 </project>
