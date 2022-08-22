@@ -2,16 +2,22 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"os"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/gofiber/fiber/v2"
 )
 
 var ctx = context.Background()
-var redisChannel = os.Getenv("RDPUBCH")
-var hostUrl = os.Getenv("HOSTURL")
+var now = time.Now()
+
+type UrlInfo struct {
+	ShortURL  string `json:"shortUrl"`
+	Timestamp int64  `json:"timestamp"`
+}
 
 func main() {
 
@@ -31,7 +37,21 @@ func main() {
 
 		var errorFlag bool
 
-		err = rdb.Publish(ctx, redisChannel, shortenedUrl).Err()
+		urlInfo := &UrlInfo{
+			ShortURL:  shortenedUrl,
+			Timestamp: now.UnixNano(),
+		}
+
+		urlJson, err := json.Marshal(urlInfo)
+		if err != nil {
+			log.Fatal("unable to construct json")
+			errorFlag = true
+		}
+		if errorFlag {
+			return c.SendStatus(500)
+		}
+
+		err = rdb.Publish(ctx, "pubsub:dev117uday", urlJson).Err()
 		if err != nil {
 			log.Fatal("unable to publish to redis pubsub")
 			errorFlag = true
@@ -54,6 +74,6 @@ func main() {
 		return c.SendString("Looking for shortenedUrl ....")
 	})
 
-	app.Listen(hostUrl)
+	app.Listen("127.0.0.1:3000")
 
 }
