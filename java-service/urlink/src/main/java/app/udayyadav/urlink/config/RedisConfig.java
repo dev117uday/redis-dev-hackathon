@@ -14,7 +14,7 @@ public class RedisConfig {
     public JedisPooled jedisConnection() {
         JedisPooled jedisPooled = new JedisPooled("127.0.0.1", 6379);
         log.info("connection to redis established");
-        return jedisPooled;
+          return jedisPooled;
     }
 
 
