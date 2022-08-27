@@ -1,24 +1,35 @@
 package com.backend.aggregator.controller;
 
+import com.backend.aggregator.model.ShortURL;
+import com.backend.aggregator.repository.RedisSpringDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import redis.clients.jedis.JedisPooled;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("agg/api/v1")
+@RequestMapping("api/v1/manage")
 public class MainController {
-    
+
     @Autowired
-    public JedisPooled jedis;
+    private RedisSpringDAO redisSpringDAO;
 
     @GetMapping
-    public ResponseEntity<String> getSimpleKey() {
-        String value = jedis.get("hello");
-        return ResponseEntity.status(HttpStatus.OK).body(value);
+    public List<Object> getSimpleKey() {
+        return redisSpringDAO.findAll();
     }
+
+    @GetMapping("/{id}")
+    public Object findById(@PathVariable String id) {
+        return redisSpringDAO.findUrlById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> save(@RequestBody ShortURL product) {
+        redisSpringDAO.save(product);
+        return ResponseEntity.status(201).build();
+    }
+
 }

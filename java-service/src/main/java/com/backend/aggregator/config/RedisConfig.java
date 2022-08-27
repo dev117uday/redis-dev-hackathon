@@ -1,33 +1,83 @@
 package com.backend.aggregator.config;
 
+import com.backend.aggregator.pubsub.RedisPubSub;
+import io.github.dengliming.redismodule.redistimeseries.RedisTimeSeries;
+import io.github.dengliming.redismodule.redistimeseries.client.RedisTimeSeriesClient;
+import org.redisson.config.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.backend.aggregator.pubsub.RedisPubSub;
-
-import lombok.extern.slf4j.Slf4j;
-import redis.clients.jedis.JedisPooled;
-import redis.clients.jedis.exceptions.JedisConnectionException;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
-@Slf4j
+@EnableRedisRepositories
 public class RedisConfig {
 
     @Bean
-    public JedisPooled jedisConnection() {
-        JedisPooled jedis = new JedisPooled("127.0.0.1", 6379);
-        
-        try {
-            jedis.set("hello", "world");
-            jedis.get("hello");
-        } catch(JedisConnectionException e) {
-            log.error("couldn't connect to redis cluster");
-            return null;
-        }
+    public Config config() {
+        Config config = new Config();
+        config.useSingleServer()
+                .setAddress("redis://localhost:6379");
+        return config;
+    }
 
-        log.info("connected to redis cluster");
-        jedis.subscribe(new RedisPubSub(), "pubsub:dev117uday");
-        return jedis;
+    @Bean
+    public LettuceConnectionFactory connectionFactory() {
+        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        configuration.setHostName("localhost");
+        configuration.setPort(6379);
+        return new LettuceConnectionFactory(configuration);
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new JdkSerializationRedisSerializer());
+        template.setValueSerializer(new JdkSerializationRedisSerializer());
+        template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
+        template.setEnableTransactionSupport(true);
+        template.afterPropertiesSet();
+        return template;
+    }
+
+    @Bean
+    public ChannelTopic topic() {
+        return new ChannelTopic("pubsub:dev117uday");
+    }
+
+    @Bean
+    public MessageListenerAdapter messageListenerAdapter() {
+        return new MessageListenerAdapter(new RedisPubSub());
+    }
+
+    @Bean
+    public RedisMessageListenerContainer redisMessageListenerContainer() {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory());
+        container.addMessageListener(messageListenerAdapter(), topic());
+        return container;
+    }
+
+    @Bean
+    public RedisTimeSeriesClient redisTimeSeriesClient(Config config) {
+        return new RedisTimeSeriesClient(config);
+    }
+
+    @Bean
+    public RedisTimeSeries redisTimeSeries(RedisTimeSeriesClient redisTimeSeriesClient) {
+        return redisTimeSeriesClient.getRedisTimeSeries();
     }
 
 }
