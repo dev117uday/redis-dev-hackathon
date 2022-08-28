@@ -22,11 +22,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 public class RedisConfig {
 
+
     @Bean
     public Config config() {
         Config config = new Config();
         config.useSingleServer()
-                .setAddress("redis://localhost:6379");
+                .setAddress("redis://127.0.0.1:6379");
+
         return config;
     }
 

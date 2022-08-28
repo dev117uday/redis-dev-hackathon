@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -12,7 +13,6 @@ import (
 )
 
 var ctx = context.Background()
-var now = time.Now()
 
 type UrlInfo struct {
 	ShortURL  string `json:"shortUrl"`
@@ -39,8 +39,10 @@ func main() {
 
 		urlInfo := &UrlInfo{
 			ShortURL:  shortenedUrl,
-			Timestamp: now.UnixNano(),
+			Timestamp: time.Now().UnixMilli(),
 		}
+
+		fmt.Println(urlInfo)
 
 		urlJson, err := json.Marshal(urlInfo)
 		if err != nil {
