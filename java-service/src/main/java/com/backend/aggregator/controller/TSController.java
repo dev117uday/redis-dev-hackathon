@@ -2,18 +2,15 @@ package com.backend.aggregator.controller;
 
 import io.github.dengliming.redismodule.redistimeseries.RedisTimeSeries;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.timeseries.TSElement;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/ts")
+@CrossOrigin(origins = "*")
 public class TSController {
 
     JedisPooled jedis = new JedisPooled("localhost", 6379);
