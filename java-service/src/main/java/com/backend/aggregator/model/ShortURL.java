@@ -21,7 +21,7 @@ public class ShortURL implements Serializable {
     private String owner;
     private List<String> tags;
     private String longUrl;
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
 
 }

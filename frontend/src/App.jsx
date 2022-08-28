@@ -3,6 +3,7 @@ import MainTable from './components/MainTable';
 import NavBar from './components/NavBar';
 import { Routes, Route } from "react-router-dom"
 import InfoPage from './components/InfoPage';
+import SaveForm from './components/SaveForm';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainTable />} />
           <Route path="/:shortUrl/" element={<InfoPage />} />
+          <Route path="/save" element={<SaveForm />} />
         </Routes>
       </div>
     </div>
