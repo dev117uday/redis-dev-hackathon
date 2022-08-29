@@ -6,13 +6,17 @@ A URL shortening service with objective to:
 - To provide a alias for long URLs
 - Record the visits on the URL for info about its use
 
-- insert screen shot
+#### Typical Architecture
+![12](https://user-images.githubusercontent.com/49728410/187259599-5440c310-d5df-41bd-8c41-883458d0351b.png)
+#### Simplified Redis Stack Architecture
+![18](https://user-images.githubusercontent.com/49728410/187259621-cf67128f-387e-4b27-8838-abfd6c3c86bf.png)
+
 
 # Overview video (Optional)
 
 Here's a short video that explains the project and how it uses Redis:
 
-[![Embed your YouTube video](https://i.ytimg.com/vi/vyxdC1qK4NE/maxresdefault.jpg)](https://www.youtube.com/watch?v=bB_ph71Oh7w)
+[![Embed your YouTube video](https://user-images.githubusercontent.com/49728410/187259926-bac0aee2-11c5-4af9-86dd-8a00cb2b2693.png)](https://www.youtube.com/watch?v=bB_ph71Oh7w)
 
 ## How it works
 
