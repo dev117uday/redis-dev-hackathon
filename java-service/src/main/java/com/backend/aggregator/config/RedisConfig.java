@@ -24,15 +24,6 @@ public class RedisConfig {
 
 
     @Bean
-    public Config config() {
-        Config config = new Config();
-        config.useSingleServer()
-                .setAddress("redis://127.0.0.1:6379");
-
-        return config;
-    }
-
-    @Bean
     public LettuceConnectionFactory connectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setHostName("localhost");
@@ -70,16 +61,6 @@ public class RedisConfig {
         container.setConnectionFactory(connectionFactory());
         container.addMessageListener(messageListenerAdapter(), topic());
         return container;
-    }
-
-    @Bean
-    public RedisTimeSeriesClient redisTimeSeriesClient(Config config) {
-        return new RedisTimeSeriesClient(config);
-    }
-
-    @Bean
-    public RedisTimeSeries redisTimeSeries(RedisTimeSeriesClient redisTimeSeriesClient) {
-        return redisTimeSeriesClient.getRedisTimeSeries();
     }
 
 }

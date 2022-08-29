@@ -3,9 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -22,7 +20,7 @@ type UrlInfo struct {
 func main() {
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr: os.Getenv("RDBURL"),
+		Addr: "localhost:6379",
 	})
 
 	app := fiber.New()
@@ -41,8 +39,6 @@ func main() {
 			ShortURL:  shortenedUrl,
 			Timestamp: time.Now().UnixMilli(),
 		}
-
-		fmt.Println(urlInfo)
 
 		urlJson, err := json.Marshal(urlInfo)
 		if err != nil {

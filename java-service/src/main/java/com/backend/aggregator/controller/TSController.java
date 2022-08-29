@@ -1,7 +1,5 @@
 package com.backend.aggregator.controller;
 
-import io.github.dengliming.redismodule.redistimeseries.RedisTimeSeries;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.timeseries.TSElement;
@@ -15,8 +13,6 @@ public class TSController {
 
     JedisPooled jedis = new JedisPooled("localhost", 6379);
 
-    @Autowired
-    private RedisTimeSeries redisTimeSeries;
 
     @GetMapping("{shortUrl}")
     public List<TSElement> getUrlInfo(@PathVariable String shortUrl) {
@@ -26,9 +22,7 @@ public class TSController {
         long currentTime = System.currentTimeMillis();
         long minusTime = currentTime - ((currentTime) / 1000 / 60 / 60);
 
-        var some = jedis.tsRange(key, minusTime, currentTime);
-
-        return some;
+        return jedis.tsRange(key, minusTime, currentTime);
     }
 
 
