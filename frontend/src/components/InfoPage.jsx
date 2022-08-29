@@ -54,6 +54,7 @@ function MainTable() {
                 <div className="card-body">
                     <h5 className="card-title">Short URL : {apiResponse.shortUrl}</h5>
                     <p className="card-text">Long URL : {apiResponse.longUrl}</p>
+                    <p className="card-text">Tags : {apiResponse.tags}</p>
                     <p className="card-text fs-6 text-muted">Created At : {apiResponse.createdAt}</p>
                     <a href="/"><button className="btn btn-primary">Go Back</button></a>
                 </div>

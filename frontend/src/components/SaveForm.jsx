@@ -42,26 +42,26 @@ function SaveForm(props) {
 
     return (
         <form onSubmit={e => { handleSubmit(e) }}>
-            <div class="mb-2">
-                <label class="form-label">Short Link</label>
-                <input type="text" class="form-control" onChange={(ele) => {
+            <div className="mb-2">
+                <label className="form-label">Short Link</label>
+                <input type="text" className="form-control" onChange={(ele) => {
                     setShortLink(ele.target.value)
                 }
                 } />
             </div>
-            <div class="mb-2">
-                <label class="form-label">Long URL</label>
-                <input type="text" class="form-control" onChange={(ele) => setLongLink(ele.target.value)} />
+            <div className="mb-2">
+                <label className="form-label">Long URL</label>
+                <input type="text" className="form-control" onChange={(ele) => setLongLink(ele.target.value)} />
             </div>
-            <div class="mb-2">
-                <label class="form-label">Owner : </label>
-                <input type="text" class="form-control" onChange={(ele) => setOwner(ele.target.value)} />
+            <div className="mb-2">
+                <label className="form-label">Owner : </label>
+                <input type="text" className="form-control" onChange={(ele) => setOwner(ele.target.value)} />
             </div>
-            <div class="mb-2">
-                <label class="form-label">Tag or Label</label>
-                <input type="text" class="form-control" onChange={(ele) => setTag(ele.target.value)} />
+            <div className="mb-2">
+                <label className="form-label">Tag or Label</label>
+                <input type="text" className="form-control" onChange={(ele) => setTag(ele.target.value)} />
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" className="btn btn-primary">Submit</button>
         </form>
     )
 }

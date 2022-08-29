@@ -10,7 +10,7 @@ function NavBar() {
                         <img src={ireact} width="30" height="24" className="d-inline-block align-text-top" />
                         URL Shortener
                     </a>
-                    <a href="/save"><button class="btn btn-outline-success" type="submit">Save Link</button></a>
+                    <a href="/save"><button className="btn btn-outline-success" type="submit">Save Link</button></a>
                 </div>
             </nav>
         </>
