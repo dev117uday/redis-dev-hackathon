@@ -60,6 +60,7 @@ npm run dev
 - CLick more Info for the short URL
 - go to : localhost:3000/{your short url}
 - refresh the info page of frontend to see the timestamp
+- for aggregator endpoints : visit http://localhost:8080/swagger-ui/index.html
 
 ### Prerequisites
 
